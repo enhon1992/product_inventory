@@ -22,9 +22,11 @@ public class InventoryRequestProcessorThreadPool {
      */
     private ExecutorService threadPool = Executors.newFixedThreadPool(10);
 
+    private RequestQueue requestQueue;
+
     private InventoryRequestProcessorThreadPool(){
         RequestQueue requestQueues = RequestQueue.getInstance();
-
+        this.requestQueue=requestQueues;
         for(int i = 0; i < 10; i++) {
             ArrayBlockingQueue<InventoryRequest> queue = new ArrayBlockingQueue<InventoryRequest>(100);
             requestQueues.addQueue(queue);
@@ -45,4 +47,7 @@ public class InventoryRequestProcessorThreadPool {
         return getInstance();
     }
 
+    public RequestQueue getRequestQueue() {
+        return requestQueue;
+    }
 }
