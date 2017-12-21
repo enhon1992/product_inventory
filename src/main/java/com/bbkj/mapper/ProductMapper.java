@@ -12,7 +12,7 @@ import org.apache.ibatis.annotations.Update;
 @Mapper
 public interface ProductMapper {
 
-	@Insert("insert into products (pname,type,price)values(#{pname},#{type},#{price})")
+	@Insert("insert into products (pname,type,price,createTime)values(#{pname},#{type},#{price},#{createTime})")
 	public Integer add(Product product);
 	
 	@Delete("delete from products where pid=#{arg1}")
