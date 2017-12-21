@@ -11,7 +11,7 @@ import java.util.concurrent.Executors;
 /**
  * 这个线程池是单例的 内部静态类单例模式
  */
-public class RequestProcessorThreadPool {
+public class InventoryRequestProcessorThreadPool {
 
 
     // 在实际项目中，你设置线程池大小是多少，每个线程监控的那个内存队列的大小是多少
@@ -22,7 +22,7 @@ public class RequestProcessorThreadPool {
      */
     private ExecutorService threadPool = Executors.newFixedThreadPool(10);
 
-    private RequestProcessorThreadPool(){
+    private InventoryRequestProcessorThreadPool(){
         RequestQueue requestQueues = RequestQueue.getInstance();
 
         for(int i = 0; i < 10; i++) {
@@ -32,10 +32,17 @@ public class RequestProcessorThreadPool {
         }
     }
     private static class RequestProcessorThreadPoolSingletonHandler{
-        private final static RequestProcessorThreadPool instance= new RequestProcessorThreadPool();
+        private final static InventoryRequestProcessorThreadPool instance= new InventoryRequestProcessorThreadPool();
     }
-    public static RequestProcessorThreadPool getInstance(){
+    private static InventoryRequestProcessorThreadPool getInstance(){
         return RequestProcessorThreadPoolSingletonHandler.instance;
+    }
+
+    /**
+     * 初始化的便捷方法
+     */
+    public static InventoryRequestProcessorThreadPool init() {
+        return getInstance();
     }
 
 }
