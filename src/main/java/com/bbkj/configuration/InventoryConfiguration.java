@@ -1,5 +1,6 @@
 package com.bbkj.configuration;
 import com.bbkj.threadpool.InventoryRequestProcessorThreadPool;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.context.annotation.Bean;
 
@@ -7,13 +8,17 @@ import org.springframework.context.annotation.Bean;
 public class InventoryConfiguration {
 
     /**
-     * 初始化线程池 并且纳入到spring的容器中管理起来
+     * 处理库存的后台线程的个数
+     */
+    @Value("${inventory.project.thread.count}")
+    private Integer thredCount;
+
+    /**
+     * 项目启动 初始化内存队列和线程池 并且把内存队列和线程池 纳入到spring中管理起来
      * @return
      */
     @Bean
-    public InventoryRequestProcessorThreadPool inventoryRequestProcessorThreadPool(){
-        return  InventoryRequestProcessorThreadPool.init();
+    InventoryRequestProcessorThreadPool inventoryRequestProcessorThreadPool(){
+        return InventoryRequestProcessorThreadPool.init(thredCount);
     }
-
-
 }

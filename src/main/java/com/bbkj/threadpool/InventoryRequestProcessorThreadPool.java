@@ -3,6 +3,8 @@ package com.bbkj.threadpool;
 import com.bbkj.request.InventoryRequest;
 import com.bbkj.request.RequestQueue;
 import com.bbkj.thread.InventoryRequestProcessorThread;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ExecutorService;
@@ -13,25 +15,17 @@ import java.util.concurrent.Executors;
  */
 public class InventoryRequestProcessorThreadPool {
 
-
-    // 在实际项目中，你设置线程池大小是多少，每个线程监控的那个内存队列的大小是多少
-    // 都可以做到一个外部的配置文件中
-    // 我们这了就给简化了，直接写死了
     /**
      * 线程池
      */
-    private ExecutorService threadPool = Executors.newFixedThreadPool(10);
+    private ExecutorService threadPool;
 
-    private RequestQueue requestQueue;
+    private RequestQueue requestQueues;
 
+    /**
+     * 构造函数私有化，如果将该类通过@Component管理  就不能保证单例了
+     */
     private InventoryRequestProcessorThreadPool(){
-        RequestQueue requestQueues = RequestQueue.getInstance();
-        this.requestQueue=requestQueues;
-        for(int i = 0; i < 10; i++) {
-            ArrayBlockingQueue<InventoryRequest> queue = new ArrayBlockingQueue<InventoryRequest>(100);
-            requestQueues.addQueue(queue);
-            threadPool.submit(new InventoryRequestProcessorThread(queue));
-        }
     }
     private static class RequestProcessorThreadPoolSingletonHandler{
         private final static InventoryRequestProcessorThreadPool instance= new InventoryRequestProcessorThreadPool();
@@ -41,13 +35,23 @@ public class InventoryRequestProcessorThreadPool {
     }
 
     /**
-     * 初始化的便捷方法
+     * 初始化的线程池和内存队列
      */
-    public static InventoryRequestProcessorThreadPool init() {
-        return getInstance();
+    public static  InventoryRequestProcessorThreadPool init(int threadCount) {
+        getInstance().threadPool = Executors.newFixedThreadPool(threadCount);
+        getInstance().requestQueues = RequestQueue.getInstance();
+        for(int i = 0; i < 10; i++) {
+            ArrayBlockingQueue<InventoryRequest> queue = new ArrayBlockingQueue<InventoryRequest>(100);
+            getInstance().requestQueues.addQueue(queue);
+            getInstance().threadPool.submit(new InventoryRequestProcessorThread(queue));
+        }
+        return  getInstance();
+    }
+    public RequestQueue getRequestQueue() {
+        return requestQueues;
     }
 
-    public RequestQueue getRequestQueue() {
-        return requestQueue;
+    public ExecutorService getThreadPool() {
+        return threadPool;
     }
 }
