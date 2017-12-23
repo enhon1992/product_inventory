@@ -15,7 +15,11 @@ public class RequestQueue {
 	 * 内存队列
 	 */
 	private List<ArrayBlockingQueue<InventoryRequest>> queues = new ArrayList<ArrayBlockingQueue<InventoryRequest>>();
-	
+
+	public ArrayBlockingQueue<InventoryRequest> getQueue(int index) {
+		return this.queues.get(index);
+	}
+
 	/**
 	 * 单例有很多种方式去实现：我采取绝对线程安全的一种方式
 	 * 
@@ -42,6 +46,15 @@ public class RequestQueue {
 	 */
 	public void addQueue(ArrayBlockingQueue<InventoryRequest> queue) {
 		this.queues.add(queue);
+	}
+
+
+	/**
+	 * 获取内存队列的个数
+	 * @return
+	 */
+	public int getQueueSize(){
+		return this.queues.size();
 	}
 	
 }

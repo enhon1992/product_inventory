@@ -10,13 +10,13 @@ public class InventoryConfiguration {
     /**
      * 处理库存的后台线程的个数
      */
-    @Value("${inventory.project.thread.count}")
+    @Value("${inventory.project.thread.count:20}")
     private Integer thredCount;
 
-    @Value("${inventory.project.perInventoryQueueCapacity}")
+    @Value("${inventory.project.perInventoryQueueCapacity:100}")
     private Integer perInventoryQueueCapacity;
 
-    @Value("${inventory.project.inventoryQueuesCount}")
+    @Value("${inventory.project.inventoryQueuesCount:10}")
     private Integer inventoryQueuesCount;
 
     /**
