@@ -1,0 +1,3 @@
+product_inventory
+
+高并发商品库存架构
