@@ -37,11 +37,11 @@ public class InventoryRequestProcessorThreadPool {
     /**
      * 初始化的线程池和内存队列
      */
-    public static  InventoryRequestProcessorThreadPool init(int threadCount) {
+    public static  InventoryRequestProcessorThreadPool init(int threadCount,int perInventoryQueueCapacity,int inventoryQueuesCount) {
         getInstance().threadPool = Executors.newFixedThreadPool(threadCount);
         getInstance().requestQueues = RequestQueue.getInstance();
-        for(int i = 0; i < 10; i++) {
-            ArrayBlockingQueue<InventoryRequest> queue = new ArrayBlockingQueue<InventoryRequest>(100);
+        for(int i = 0; i < inventoryQueuesCount; i++) {
+            ArrayBlockingQueue<InventoryRequest> queue = new ArrayBlockingQueue<InventoryRequest>(perInventoryQueueCapacity);
             getInstance().requestQueues.addQueue(queue);
             getInstance().threadPool.submit(new InventoryRequestProcessorThread(queue));
         }
