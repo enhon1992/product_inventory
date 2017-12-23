@@ -82,7 +82,7 @@ public class ProductInventoryServiceImpl implements ProductInventoryService {
 	public ProductInventory getProductInventoryCache(Integer productId) {
 		if(productId!=null){
 			String res=redisDAO.get(inventory_key_prefix +productId);
-			if(res!=null){
+			if(res!=null&&!"".equals(res)){
 				return JsonUtils.jsonToPojo(res,ProductInventory.class);
 			}else{
 				return null;

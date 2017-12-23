@@ -2,7 +2,7 @@ package com.bbkj.service.impl;
 
 import com.bbkj.request.InventoryRequest;
 import com.bbkj.request.RequestQueue;
-import com.bbkj.service.InventoryRequestAsyncProcessService;
+import com.bbkj.service.ProductInventoryRequestAsyncProcessService;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.ArrayBlockingQueue;
@@ -13,7 +13,7 @@ import java.util.concurrent.ArrayBlockingQueue;
  *
  */
 @Service
-public class InventoryRequestAsyncProcessServiceImpl implements InventoryRequestAsyncProcessService {
+public class ProductInventoryRequestAsyncProcessServiceImpl implements ProductInventoryRequestAsyncProcessService {
 	
 	@Override
 	public void process(InventoryRequest request) {

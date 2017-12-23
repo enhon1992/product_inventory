@@ -20,8 +20,6 @@ public class InventoryRequestProcessorThreadPool {
      */
     private ExecutorService threadPool;
 
-    private RequestQueue requestQueues;
-
     /**
      * 构造函数私有化，如果将该类通过@Component管理  就不能保证单例了
      */
@@ -39,16 +37,14 @@ public class InventoryRequestProcessorThreadPool {
      */
     public static  InventoryRequestProcessorThreadPool init(int threadCount,int perInventoryQueueCapacity,int inventoryQueuesCount) {
         getInstance().threadPool = Executors.newFixedThreadPool(threadCount);
-        getInstance().requestQueues = RequestQueue.getInstance();
+        RequestQueue requestQueues = RequestQueue.getInstance();
         for(int i = 0; i < inventoryQueuesCount; i++) {
+            //ArrayBlockingqueue是线程安全的
             ArrayBlockingQueue<InventoryRequest> queue = new ArrayBlockingQueue<InventoryRequest>(perInventoryQueueCapacity);
-            getInstance().requestQueues.addQueue(queue);
+            requestQueues.addQueue(queue);
             getInstance().threadPool.submit(new InventoryRequestProcessorThread(queue));
         }
         return  getInstance();
-    }
-    public RequestQueue getRequestQueue() {
-        return requestQueues;
     }
 
     public ExecutorService getThreadPool() {

@@ -7,7 +7,7 @@ import com.bbkj.request.InventoryRequest;
  * @author Administrator
  *
  */
-public interface InventoryRequestAsyncProcessService {
+public interface ProductInventoryRequestAsyncProcessService {
 
 	void process(InventoryRequest request);
 }
